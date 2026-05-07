@@ -15,6 +15,8 @@ resource "aws_instance" "api_server" {
     vpc_security_group_ids  = [aws_security_group.sg_api_server.id]
     key_name                = "mirrorsoul-api-key"
 
+    iam_instance_profile = aws_iam_instance_profile.api_server_profile.name
+
     tags = {
         Name = "mirrorsoul-api-server"
     }
