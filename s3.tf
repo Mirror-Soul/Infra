@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "storage" {
-    bucket = "mirrorsoul-storage-64
+    bucket = "mirrorsoul-storage-64"
 
     tags = {
         Name = "mirrorsoul-storage"
