@@ -56,5 +56,5 @@ resource "aws_iam_role_policy" "s3_policy" {
 
 resource "aws_iam_instance_profile" "api_server_profile" {
   name = "mirrorsoul-api-server-profile"
-  role = aws_iam_role.api_serer_role.name
+  role = aws_iam_role.api_server_role.name
 }
