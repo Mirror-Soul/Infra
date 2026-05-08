@@ -70,7 +70,7 @@ resource "aws_db_instance" "mysql" {
     aws_security_group.rds_sg.id
   ]
 
-  publicly_accessible = false
+  publicly_accessible = true
   multi_az            = false
   skip_final_snapshot = true
   deletion_protection = false
