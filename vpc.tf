@@ -1,6 +1,10 @@
 resource "aws_vpc" "main" {
     cidr_block = "10.0.0.0/16"
 
+    
+    enable_dns_support   = true     # 나중에 지워야 함. 로컬 workbench에서 rds 접속하기 위해 적은 것.
+    enable_dns_hostnames = true     # 나중에 지워야 함.
+
     tags = {
         Name = "mirrorsoul-vpc"
     }
