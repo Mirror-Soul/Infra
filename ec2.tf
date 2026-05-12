@@ -7,6 +7,11 @@ resource "aws_instance" "api_server" {
 
     iam_instance_profile = aws_iam_instance_profile.api_server_profile.name
 
+    root_block_device {
+        volume_size = 10
+        volume_type = "gp3"
+    }
+
     tags = {
         Name = "mirrorsoul-api-server"
     }
