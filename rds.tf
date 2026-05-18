@@ -36,6 +36,15 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = ["39.115.12.8/32"]
   }
 
+  ingress {
+    description = "MySQL from ALL"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+
+    cidr_blocks = ["0.0.0.0/0"] # 임시 개발용
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
