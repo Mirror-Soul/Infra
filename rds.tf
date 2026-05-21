@@ -17,10 +17,10 @@ resource "aws_security_group" "rds_sg" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description     = "MySQL from API Server"
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
+    description = "MySQL from API Server"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
 
     security_groups = [
       aws_security_group.sg_api_server.id
@@ -79,10 +79,10 @@ resource "aws_db_instance" "mysql" {
     aws_security_group.rds_sg.id
   ]
 
-  publicly_accessible = true
-  multi_az            = false
-  skip_final_snapshot = true
-  deletion_protection = false
+  publicly_accessible     = true
+  multi_az                = false
+  skip_final_snapshot     = true
+  deletion_protection     = false
   backup_retention_period = 0
 
   tags = {
