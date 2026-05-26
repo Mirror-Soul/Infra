@@ -28,12 +28,14 @@ resource "aws_security_group" "rds_sg" {
   }
 
   ingress {
-    description = "MySQL from my PC"
+    description = "MySQL from AI Server"
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
 
-    cidr_blocks = ["39.115.12.8/32"]
+    security_groups = [
+      aws_security_group.sg_ai_server.id
+    ]
   }
 
   ingress {
