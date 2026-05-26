@@ -1,15 +1,17 @@
+# aws_vpc.main 이라는 VPC를 생성.
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "10.0.0.0/16"      # private IP 범위
 
 
-  enable_dns_support   = true # 나중에 지워야 함. 로컬 workbench에서 rds 접속하기 위해 적은 것.
-  enable_dns_hostnames = true # 나중에 지워야 함.
+  enable_dns_support   = true     # 나중에 지워야 함. 로컬 workbench에서 rds 접속하기 위해 적은 것.
+  enable_dns_hostnames = true     # 나중에 지워야 함.
 
   tags = {
     Name = "mirrorsoul-vpc"
   }
 }
 
+# 1st public subnet. API와 AI 둘 다 포함되어있는 서브넷.
 resource "aws_subnet" "public_a" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
@@ -21,6 +23,7 @@ resource "aws_subnet" "public_a" {
   }
 }
 
+# 2nd public subnet. RDS가 포함되어 있는 서브넷
 resource "aws_subnet" "public_b" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.2.0/24"
@@ -32,6 +35,7 @@ resource "aws_subnet" "public_b" {
   }
 }
 
+# internet gateway. vpc와 외부인터넷이 통신
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -40,6 +44,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
+# route table. 서브넷에서 외부로 나갈 때 igw를 사용함.
 resource "aws_route_table" "rt" {
   vpc_id = aws_vpc.main.id
   route {
@@ -52,11 +57,13 @@ resource "aws_route_table" "rt" {
   }
 }
 
+#subnet a랑 route table이랑 연결
 resource "aws_route_table_association" "rta_a" {
   subnet_id      = aws_subnet.public_a.id
   route_table_id = aws_route_table.rt.id
 }
 
+#subnet b랑 route table이랑 연결
 resource "aws_route_table_association" "rta_b" {
   subnet_id      = aws_subnet.public_b.id
   route_table_id = aws_route_table.rt.id
