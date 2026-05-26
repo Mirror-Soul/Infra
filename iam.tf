@@ -10,7 +10,7 @@ resource "aws_iam_role" "api_server_role" {
         Effect = "Allow"
 
         Principal = {
-          Service = "ec2.amazonaws.com"
+          Service = "ec2.amazonaws.com"           # EC2가 이 Role을 사용할 수 있음을 표시
         }
 
         Action = "sts:AssumeRole"
@@ -45,11 +45,11 @@ resource "aws_iam_role_policy" "s3_policy" {
         Effect = "Allow"
 
         Action = [
-          "s3:ListBucket"
+          "s3:ListBucket"                                     # 버킷 안의 객체 목록을 조회할 수 있는 권한
         ]
 
         Resource = [
-          aws_s3_bucket.storage.arn
+          aws_s3_bucket.storage.arn                           # 버킷 자체에 대한 권한이라 /* 없음.
         ]
       }
     ]
@@ -80,6 +80,7 @@ resource "aws_iam_role_policy" "api_sqs_policy" {
   })
 }
 
+# 생성한 Role을 API Server EC2에 붙일 수 있도록 instance profile을 생성함.
 resource "aws_iam_instance_profile" "api_server_profile" {
   name = "mirrorsoul-api-server-profile"
   role = aws_iam_role.api_server_role.name
@@ -158,6 +159,7 @@ resource "aws_iam_role_policy" "ai_s3_sqs_policy" {
   })
 }
 
+# 생성한 Role을 AI Server EC2에 붙일 수 있도록 instance profile을 생성함.
 resource "aws_iam_instance_profile" "ai_server_profile" {
   name = "mirrorsoul-ai-server-profile"
   role = aws_iam_role.ai_server_role.name

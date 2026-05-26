@@ -1,3 +1,4 @@
+# 목소리 생성 작업 요청 용 SQS 생성
 resource "aws_sqs_queue" "ai_job_queue" {
   name = "mirrorsoul-ai-job-queue"
 
