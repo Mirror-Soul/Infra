@@ -1,8 +1,10 @@
+# API Server 용 security group
 resource "aws_security_group" "sg_api_server" {
   name        = "mirrorsoul-api-sg"
   description = "Security group for API server"
   vpc_id      = aws_vpc.main.id
 
+  # SSH 접속 허용
   ingress {
     description = "SSH"
 
@@ -10,9 +12,10 @@ resource "aws_security_group" "sg_api_server" {
     to_port   = 22
     protocol  = "tcp"
 
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]     # 운영 환경에서는 내 IP로 제한해 놓는게 좋음.
   }
 
+  # Spring Boot API 접속 허용
   ingress {
     description = "Spring Boot API"
 
@@ -23,6 +26,7 @@ resource "aws_security_group" "sg_api_server" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # HTTP 접속 허용
   ingress {
     description = "HTTP"
 
@@ -33,6 +37,7 @@ resource "aws_security_group" "sg_api_server" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # HTTPS 접속 허용
   ingress {
     description = "HTTPS"
 
@@ -43,6 +48,7 @@ resource "aws_security_group" "sg_api_server" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # 모든 곳으로 outbound 가능
   egress {
     description = "Allow all outbound"
 
@@ -58,11 +64,13 @@ resource "aws_security_group" "sg_api_server" {
   }
 }
 
+# AI Server 용 security group
 resource "aws_security_group" "sg_ai_server" {
   name        = "mirrorsoul-ai-sg"
   description = "Security group for AI server"
   vpc_id      = aws_vpc.main.id
 
+  # SSH 접속 허용
   ingress {
     description = "SSH"
 
@@ -84,6 +92,7 @@ resource "aws_security_group" "sg_ai_server" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # 모든 곳으로 outbound 가능
   egress {
     description = "Allow all outbound"
 

@@ -1,3 +1,4 @@
+# API Server 용 Elastic IP 생성
 resource "aws_eip" "api_server_eip" {
   domain = "vpc"
 
@@ -6,11 +7,13 @@ resource "aws_eip" "api_server_eip" {
   }
 }
 
+# 생성한 eip를 API Server EC2에 연결
 resource "aws_eip_association" "api_server_eip_assoc" {
   instance_id   = aws_instance.api_server.id
   allocation_id = aws_eip.api_server_eip.id
 }
 
+# AI Server 용 Elastic IP 생성
 resource "aws_eip" "ai_server_eip" {
   domain = "vpc"
 
@@ -19,6 +22,7 @@ resource "aws_eip" "ai_server_eip" {
   }
 }
 
+# 생성한 eip를 AI Server EC2에 연결
 resource "aws_eip_association" "ai_server_eip_asspc" {
   instance_id   = aws_instance.ai_server.id
   allocation_id = aws_eip.ai_server_eip.id
