@@ -164,3 +164,26 @@ resource "aws_iam_instance_profile" "ai_server_profile" {
   name = "mirrorsoul-ai-server-profile"
   role = aws_iam_role.ai_server_role.name
 }
+
+#---------------------------------CALL------------------------------------#
+
+# CALL 서버 IAM ROLE 설정
+resource "aws_iam_role" "call_server_role" {
+  name = "mirrorsoul-call-server-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_instance_profile" "call_server_profile" {
+  name = "mirrorsoul-call-server-profile"
+  role = aws_iam_role.call_server_role.name
+}

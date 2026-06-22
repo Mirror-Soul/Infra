@@ -107,3 +107,54 @@ resource "aws_security_group" "sg_ai_server" {
     Name = "mirrorsoul-ai-sg"
   }
 }
+
+# Call Server 용 security group
+resource "aws_security_group" "sg_call_server" {
+  name        = "mirrorsoul-call-server-sg"
+  description = "Security group for call server"
+  vpc_id      = aws_vpc.main.id
+
+  # SSH
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # FastAPI / WebSocket
+  ingress {
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # WebRTC Signaling HTTPS 쓰면 나중에 443
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # WebRTC UDP 포트 범위
+  ingress {
+    from_port   = 10000
+    to_port     = 20000
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # outbound 전체 허용
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "mirrorsoul-call-server-sg"
+  }
+}
