@@ -27,3 +27,18 @@ resource "aws_eip_association" "ai_server_eip_asspc" {
   instance_id   = aws_instance.ai_server.id
   allocation_id = aws_eip.ai_server_eip.id
 }
+
+# Call Server 용 Elastic IP 생성
+resource "aws_eip" "call_server_eip" {
+  domain = "vpc"
+
+  tags = {
+    Name = "mirrorsoul-call-server-eip"
+  }
+}
+
+# 생성한 eip를 Call Server EC2에 연결
+resource "aws_eip_association" "call_server_eip_asspc" {
+  instance_id   = aws_instance.call_server.id
+  allocation_id = aws_eip.call_server_eip.id
+}
