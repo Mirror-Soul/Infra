@@ -149,6 +149,7 @@ resource "aws_iam_role_policy" "ai_s3_sqs_policy" {
         Effect = "Allow"
 
         Action = [
+          "sqs:SendMessage",
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueUrl",
