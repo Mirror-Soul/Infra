@@ -74,7 +74,10 @@ resource "aws_iam_role_policy" "api_sqs_policy" {
           "sqs:GetQueueAttributes"
         ]
 
-        Resource = aws_sqs_queue.ai_job_queue.arn
+        Resource = [
+        aws_sqs_queue.ai_job_queue.arn,
+        aws_sqs_queue.face_training_queue.arn
+        ]
       }
     ]
   })
@@ -153,7 +156,10 @@ resource "aws_iam_role_policy" "ai_s3_sqs_policy" {
           "sqs:ChangeMessageVisibility"
         ]
 
-        Resource = aws_sqs_queue.ai_job_queue.arn
+        Resource = [
+          aws_sqs_queue.ai_job_queue.arn,
+          aws_sqs_queue.face_training_queue.arn
+        ]
       }
     ]
   })
