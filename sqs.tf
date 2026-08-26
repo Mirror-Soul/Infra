@@ -15,3 +15,12 @@ resource "aws_sqs_queue" "face_training_queue" {
   message_retention_seconds = 345600
   receive_wait_time_seconds = 20
 }
+
+# 밸런스게임 성향 분석 작업 요청용 SQS
+resource "aws_sqs_queue" "value_balance_analysis_queue" {
+  name = "mirrorsoul-value-balance-analysis-queue"
+
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+}
