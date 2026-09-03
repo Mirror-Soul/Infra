@@ -34,7 +34,7 @@ resource "aws_iam_user_policy" "face_gpu_worker" {
         Action = [
           "s3:PutObject"
         ]
-        Resource = "${aws_s3_bucket.storage.arn}/face-models/*"
+        Resource = "${aws_s3_bucket.storage.arn}/face-results/*"
       },
       {
         Sid    = "ProcessFaceTrainingJobs"
