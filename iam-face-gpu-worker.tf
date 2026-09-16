@@ -47,6 +47,12 @@ resource "aws_iam_user_policy" "face_gpu_worker" {
           "sqs:GetQueueAttributes"
         ]
         Resource = aws_sqs_queue.face_training_queue.arn
+      },
+      {
+        Sid      = "SendFaceTrainingResults"
+        Effect   = "Allow"
+        Action   = ["sqs:SendMessage"]
+        Resource = aws_sqs_queue.face_training_result_queue.arn
       }
     ]
   })
