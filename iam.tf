@@ -78,6 +78,18 @@ resource "aws_iam_role_policy" "api_sqs_policy" {
           aws_sqs_queue.ai_job_queue.arn,
           aws_sqs_queue.face_training_queue.arn
         ]
+      },
+      {
+        Sid    = "ConsumeFaceTrainingResults"
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:ChangeMessageVisibility",
+          "sqs:GetQueueAttributes",
+          "sqs:GetQueueUrl"
+        ]
+        Resource = aws_sqs_queue.face_training_result_queue.arn
       }
     ]
   })
