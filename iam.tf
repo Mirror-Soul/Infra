@@ -10,7 +10,7 @@ resource "aws_iam_role" "api_server_role" {
         Effect = "Allow"
 
         Principal = {
-          Service = "ec2.amazonaws.com"           # EC2가 이 Role을 사용할 수 있음을 표시
+          Service = "ec2.amazonaws.com" # EC2가 이 Role을 사용할 수 있음을 표시
         }
 
         Action = "sts:AssumeRole"
@@ -45,11 +45,11 @@ resource "aws_iam_role_policy" "s3_policy" {
         Effect = "Allow"
 
         Action = [
-          "s3:ListBucket"                                     # 버킷 안의 객체 목록을 조회할 수 있는 권한
+          "s3:ListBucket" # 버킷 안의 객체 목록을 조회할 수 있는 권한
         ]
 
         Resource = [
-          aws_s3_bucket.storage.arn                           # 버킷 자체에 대한 권한이라 /* 없음.
+          aws_s3_bucket.storage.arn # 버킷 자체에 대한 권한이라 /* 없음.
         ]
       }
     ]
@@ -75,8 +75,8 @@ resource "aws_iam_role_policy" "api_sqs_policy" {
         ]
 
         Resource = [
-        aws_sqs_queue.ai_job_queue.arn,
-        aws_sqs_queue.face_training_queue.arn
+          aws_sqs_queue.ai_job_queue.arn,
+          aws_sqs_queue.face_training_queue.arn
         ]
       }
     ]

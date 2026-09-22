@@ -1,10 +1,10 @@
 # aws_vpc.main 이라는 VPC를 생성.
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"      # private IP 범위
+  cidr_block = "10.0.0.0/16" # private IP 범위
 
 
-  enable_dns_support   = true     # 나중에 지워야 함. 로컬 workbench에서 rds 접속하기 위해 적은 것.
-  enable_dns_hostnames = true     # 나중에 지워야 함.
+  enable_dns_support   = true # 나중에 지워야 함. 로컬 workbench에서 rds 접속하기 위해 적은 것.
+  enable_dns_hostnames = true # 나중에 지워야 함.
 
   tags = {
     Name = "mirrorsoul-vpc"

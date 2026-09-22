@@ -6,7 +6,7 @@ resource "aws_instance" "api_server" {
   vpc_security_group_ids = [aws_security_group.sg_api_server.id]
   key_name               = "mirrorsoul-api-key"
 
-  iam_instance_profile = aws_iam_instance_profile.api_server_profile.name     # API 서버에 IAM Role을 붙임.
+  iam_instance_profile = aws_iam_instance_profile.api_server_profile.name # API 서버에 IAM Role을 붙임.
 
   root_block_device {
     volume_size = 10
@@ -26,7 +26,7 @@ resource "aws_instance" "ai_server" {
   vpc_security_group_ids = [aws_security_group.sg_ai_server.id]
   key_name               = "mirrorsoul-ai-key"
 
-  iam_instance_profile = aws_iam_instance_profile.ai_server_profile.name      # AI 서버에 IAM Role을 붙임.
+  iam_instance_profile = aws_iam_instance_profile.ai_server_profile.name # AI 서버에 IAM Role을 붙임.
 
   root_block_device {
     volume_size = 20

@@ -12,7 +12,7 @@ resource "aws_security_group" "sg_api_server" {
     to_port   = 22
     protocol  = "tcp"
 
-    cidr_blocks = ["0.0.0.0/0"]     # 운영 환경에서는 내 IP로 제한해 놓는게 좋음.
+    cidr_blocks = ["0.0.0.0/0"] # 운영 환경에서는 내 IP로 제한해 놓는게 좋음.
   }
 
   # Spring Boot API 접속 허용

@@ -14,7 +14,7 @@ resource "aws_s3_bucket_cors_configuration" "storage_cors" {
   cors_rule {
     allowed_headers = ["*"]
     allowed_methods = ["GET", "PUT", "POST"]
-    allowed_origins = ["*"]                                       # 현재 모든 웹사이트에서 CORS 요청을 허용하므로, 운영 환경에서는 프론트 도메인만 허용하는 방식이 더 나을 수도 있음.
+    allowed_origins = ["*"] # 현재 모든 웹사이트에서 CORS 요청을 허용하므로, 운영 환경에서는 프론트 도메인만 허용하는 방식이 더 나을 수도 있음.
     expose_headers  = ["ETag"]
 
     max_age_seconds = 3000
