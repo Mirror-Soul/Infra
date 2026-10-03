@@ -90,6 +90,18 @@ resource "aws_iam_role_policy" "api_sqs_policy" {
           "sqs:GetQueueUrl"
         ]
         Resource = aws_sqs_queue.face_training_result_queue.arn
+      },
+      {
+        Sid    = "ConsumeVoiceTrainingResults"
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:ChangeMessageVisibility",
+          "sqs:GetQueueAttributes",
+          "sqs:GetQueueUrl"
+        ]
+        Resource = aws_sqs_queue.voice_training_result_queue.arn
       }
     ]
   })
@@ -173,6 +185,12 @@ resource "aws_iam_role_policy" "ai_s3_sqs_policy" {
           aws_sqs_queue.ai_job_queue.arn,
           aws_sqs_queue.face_training_queue.arn
         ]
+      },
+      {
+        Sid      = "SendVoiceTrainingResults"
+        Effect   = "Allow"
+        Action   = ["sqs:SendMessage", "sqs:GetQueueUrl", "sqs:GetQueueAttributes"]
+        Resource = aws_sqs_queue.voice_training_result_queue.arn
       }
     ]
   })

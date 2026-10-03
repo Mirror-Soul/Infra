@@ -70,3 +70,45 @@ output "face_training_result_queue_url" {
 output "face_training_result_queue_arn" {
   value = aws_sqs_queue.face_training_result_queue.arn
 }
+
+# 음성 학습 결과 처리 실패 메시지 보관용 DLQ
+resource "aws_sqs_queue" "voice_training_result_dlq" {
+  name = "mirrorsoul-voice-training-result-dlq"
+
+  message_retention_seconds = 1209600 # 14일 보관
+  sqs_managed_sse_enabled   = true
+}
+
+# 음성 학습 결과 전달용 SQS: AI 서버 → 백엔드
+resource "aws_sqs_queue" "voice_training_result_queue" {
+  name = "mirrorsoul-voice-training-result-queue"
+
+  visibility_timeout_seconds = 120    # 백엔드 결과 저장 처리 시간
+  message_retention_seconds  = 345600 # 4일 보관
+  receive_wait_time_seconds  = 10     # long polling
+  sqs_managed_sse_enabled    = true
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.voice_training_result_dlq.arn
+    maxReceiveCount     = 5
+  })
+}
+
+resource "aws_sqs_queue_redrive_allow_policy" "voice_training_result_dlq" {
+  queue_url = aws_sqs_queue.voice_training_result_dlq.url
+
+  redrive_allow_policy = jsonencode({
+    redrivePermission = "byQueue"
+    sourceQueueArns = [
+      aws_sqs_queue.voice_training_result_queue.arn
+    ]
+  })
+}
+
+output "voice_training_result_queue_url" {
+  value = aws_sqs_queue.voice_training_result_queue.url
+}
+
+output "voice_training_result_queue_arn" {
+  value = aws_sqs_queue.voice_training_result_queue.arn
+}
