@@ -94,7 +94,7 @@ resource "aws_db_instance" "mysql" {
   skip_final_snapshot = true
   deletion_protection = false
 
-  backup_retention_period = 0
+  backup_retention_period = 7
 
   # MySQL 8.0 -> 8.4 메이저 버전 업그레이드 허용
   allow_major_version_upgrade = true
