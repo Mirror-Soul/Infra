@@ -1,3 +1,11 @@
+# 목소리 생성 작업 처리 실패 메시지 보관용 DLQ
+resource "aws_sqs_queue" "ai_job_dlq" {
+  name = "mirrorsoul-ai-job-dlq"
+
+  message_retention_seconds = 1209600 # 14일 보관
+  sqs_managed_sse_enabled   = true
+}
+
 # 목소리 생성 작업 요청 용 SQS 생성
 resource "aws_sqs_queue" "ai_job_queue" {
   name = "mirrorsoul-ai-job-queue"
@@ -5,6 +13,30 @@ resource "aws_sqs_queue" "ai_job_queue" {
   visibility_timeout_seconds = 1800   # AI가 작업 가져가면 30분동안 다른 서버가 해당 작업 못 가져감
   message_retention_seconds  = 345600 # 메세지 최대 4일 보관
   receive_wait_time_seconds  = 20     # long polling
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.ai_job_dlq.arn
+    maxReceiveCount     = 5
+  })
+}
+
+resource "aws_sqs_queue_redrive_allow_policy" "ai_job_dlq" {
+  queue_url = aws_sqs_queue.ai_job_dlq.url
+
+  redrive_allow_policy = jsonencode({
+    redrivePermission = "byQueue"
+    sourceQueueArns = [
+      aws_sqs_queue.ai_job_queue.arn
+    ]
+  })
+}
+
+# 얼굴 가공 작업 처리 실패 메시지 보관용 DLQ
+resource "aws_sqs_queue" "face_training_dlq" {
+  name = "mirrorsoul-face-training-dlq"
+
+  message_retention_seconds = 1209600 # 14일 보관
+  sqs_managed_sse_enabled   = true
 }
 
 # 얼굴 가공 작업 요청 용 SQS 생성
@@ -14,6 +46,30 @@ resource "aws_sqs_queue" "face_training_queue" {
   visibility_timeout_seconds = 3600
   message_retention_seconds  = 345600
   receive_wait_time_seconds  = 20
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.face_training_dlq.arn
+    maxReceiveCount     = 5
+  })
+}
+
+resource "aws_sqs_queue_redrive_allow_policy" "face_training_dlq" {
+  queue_url = aws_sqs_queue.face_training_dlq.url
+
+  redrive_allow_policy = jsonencode({
+    redrivePermission = "byQueue"
+    sourceQueueArns = [
+      aws_sqs_queue.face_training_queue.arn
+    ]
+  })
+}
+
+# 밸런스게임 성향 분석 작업 처리 실패 메시지 보관용 DLQ
+resource "aws_sqs_queue" "value_balance_analysis_dlq" {
+  name = "mirrorsoul-value-balance-analysis-dlq"
+
+  message_retention_seconds = 1209600 # 14일 보관
+  sqs_managed_sse_enabled   = true
 }
 
 # 밸런스게임 성향 분석 작업 요청용 SQS
@@ -23,6 +79,22 @@ resource "aws_sqs_queue" "value_balance_analysis_queue" {
   visibility_timeout_seconds = 300
   message_retention_seconds  = 345600
   receive_wait_time_seconds  = 20
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.value_balance_analysis_dlq.arn
+    maxReceiveCount     = 5
+  })
+}
+
+resource "aws_sqs_queue_redrive_allow_policy" "value_balance_analysis_dlq" {
+  queue_url = aws_sqs_queue.value_balance_analysis_dlq.url
+
+  redrive_allow_policy = jsonencode({
+    redrivePermission = "byQueue"
+    sourceQueueArns = [
+      aws_sqs_queue.value_balance_analysis_queue.arn
+    ]
+  })
 }
 
 # ------------------------------------------------------------------
