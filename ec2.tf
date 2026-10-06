@@ -1,7 +1,7 @@
 # API Server EC2 instance 생성
 resource "aws_instance" "api_server" {
   ami                    = "ami-01cbcf53c1503fe8a"
-  instance_type          = "t3.micro"
+  instance_type          = "t3.small"
   subnet_id              = aws_subnet.public_a.id
   vpc_security_group_ids = [aws_security_group.sg_api_server.id]
   key_name               = "mirrorsoul-api-key"
